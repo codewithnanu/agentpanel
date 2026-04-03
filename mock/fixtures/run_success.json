@@ -1,0 +1,269 @@
+[
+  {
+    "type": "run_started",
+    "run_id": "r_001",
+    "query": "Analyse Apple R&D intensity vs large-cap peers (2019\u20132023)",
+    "timestamp": 0
+  },
+  {
+    "type": "agent_thought",
+    "task_id": "coordinator",
+    "thought": "Breaking into: (1) Apple 10-K fetch, (2) peer identification, (3) parallel peer fetches, (4) synthesis. I have 4 peer candidates: Microsoft, Alphabet, Meta, Amazon. Will spawn 4 parallel fetch tasks but can proceed with 3 if one fails.",
+    "timestamp": 800
+  },
+  {
+    "type": "task_spawned",
+    "task_id": "t_001",
+    "label": "Fetch Apple 10-K filings (2019\u20132023)",
+    "agent": "filing_fetcher",
+    "spawned_by": "coordinator",
+    "parallel_group": null,
+    "depends_on": [],
+    "timestamp": 1500
+  },
+  {
+    "type": "tool_call",
+    "task_id": "t_001",
+    "tool": "sec_edgar_search",
+    "input_summary": "ticker=AAPL, form=10-K, years=2019\u20132023",
+    "timestamp": 2200
+  },
+  {
+    "type": "tool_result",
+    "task_id": "t_001",
+    "tool": "sec_edgar_search",
+    "output_summary": "5 filings found. Extracting R&D line items from each annual report.",
+    "timestamp": 4500
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_001",
+    "content": "Apple R&D spend: 2019 $16.2B \u2192 2023 $29.9B (+84%)",
+    "is_final": false,
+    "quality_score": null,
+    "timestamp": 6000
+  },
+  {
+    "type": "task_spawned",
+    "task_id": "t_002",
+    "label": "Fetch Microsoft 10-K filings (2019\u20132023)",
+    "agent": "filing_fetcher",
+    "spawned_by": "coordinator",
+    "parallel_group": "peer_fetch",
+    "depends_on": [],
+    "timestamp": 7000
+  },
+  {
+    "type": "task_spawned",
+    "task_id": "t_003",
+    "label": "Fetch Alphabet 10-K filings (2019\u20132023)",
+    "agent": "filing_fetcher",
+    "spawned_by": "coordinator",
+    "parallel_group": "peer_fetch",
+    "depends_on": [],
+    "timestamp": 7000
+  },
+  {
+    "type": "task_spawned",
+    "task_id": "t_004",
+    "label": "Fetch Meta 10-K filings (2019\u20132023)",
+    "agent": "filing_fetcher",
+    "spawned_by": "coordinator",
+    "parallel_group": "peer_fetch",
+    "depends_on": [],
+    "timestamp": 7000
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_001",
+    "content": "Apple R&D spend: 2019 $16.2B \u2192 2023 $29.9B (+84%). R&D as % of revenue: 6.3% \u2192 8.0%. Consistent year-over-year growth with acceleration post-2021.",
+    "is_final": true,
+    "quality_score": 0.92,
+    "timestamp": 7500
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_001",
+    "status": "complete",
+    "error": null,
+    "reason": null,
+    "message": null,
+    "timestamp": 7600
+  },
+  {
+    "type": "tool_call",
+    "task_id": "t_002",
+    "tool": "sec_edgar_search",
+    "input_summary": "ticker=MSFT, form=10-K, years=2019\u20132023",
+    "timestamp": 7800
+  },
+  {
+    "type": "tool_call",
+    "task_id": "t_003",
+    "tool": "sec_edgar_search",
+    "input_summary": "ticker=GOOGL, form=10-K, years=2019\u20132023",
+    "timestamp": 8000
+  },
+  {
+    "type": "tool_call",
+    "task_id": "t_004",
+    "tool": "sec_edgar_search",
+    "input_summary": "ticker=META, form=10-K, years=2019\u20132023",
+    "timestamp": 8200
+  },
+  {
+    "type": "tool_result",
+    "task_id": "t_003",
+    "tool": "sec_edgar_search",
+    "output_summary": "5 filings found. Extracting R&D line items.",
+    "timestamp": 9500
+  },
+  {
+    "type": "tool_result",
+    "task_id": "t_002",
+    "tool": "sec_edgar_search",
+    "output_summary": "5 filings found. Extracting R&D line items.",
+    "timestamp": 10000
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_004",
+    "status": "failed",
+    "error": "SEC EDGAR rate limit exceeded. Retrying in 15s.",
+    "reason": null,
+    "message": null,
+    "timestamp": 10800
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_003",
+    "content": "Alphabet R&D spend trending: 2019 $26.0B \u2192 parsing 2020\u20132023...",
+    "is_final": false,
+    "quality_score": null,
+    "timestamp": 11000
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_004",
+    "status": "running",
+    "error": null,
+    "reason": null,
+    "message": "Retrying after rate limit backoff.",
+    "timestamp": 11500
+  },
+  {
+    "type": "tool_call",
+    "task_id": "t_004",
+    "tool": "sec_edgar_search",
+    "input_summary": "ticker=META, form=10-K, years=2019\u20132023 [retry]",
+    "timestamp": 11800
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_002",
+    "content": "Microsoft R&D spend: 2019 $16.9B \u2192 computing 2020\u20132023...",
+    "is_final": false,
+    "quality_score": null,
+    "timestamp": 12500
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_003",
+    "content": "Alphabet R&D spend: 2019 $26.0B \u2192 2023 $45.4B (+74%). R&D as % of revenue: 15.1% \u2192 14.9%. Slight intensity decline despite large absolute increase.",
+    "is_final": true,
+    "quality_score": 0.89,
+    "timestamp": 13000
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_003",
+    "status": "complete",
+    "error": null,
+    "reason": null,
+    "message": null,
+    "timestamp": 13100
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_002",
+    "content": "Microsoft R&D spend: 2019 $16.9B \u2192 2023 $27.2B (+61%). R&D as % of revenue: 13.1% \u2192 12.9%. Slight efficiency gain as revenue grew faster than R&D spend.",
+    "is_final": true,
+    "quality_score": 0.91,
+    "timestamp": 13500
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_002",
+    "status": "complete",
+    "error": null,
+    "reason": null,
+    "message": null,
+    "timestamp": 13600
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_004",
+    "status": "cancelled",
+    "error": null,
+    "reason": "sufficient_data",
+    "message": "3 of 4 peers fetched. Coordinator proceeding with available data.",
+    "timestamp": 14000
+  },
+  {
+    "type": "task_spawned",
+    "task_id": "t_005",
+    "label": "Synthesise R&D intensity comparison across peers",
+    "agent": "synthesis_agent",
+    "spawned_by": "coordinator",
+    "parallel_group": null,
+    "depends_on": ["t_001", "t_002", "t_003"],
+    "timestamp": 14500
+  },
+  {
+    "type": "agent_thought",
+    "task_id": "t_005",
+    "thought": "I have Apple, Microsoft, and Alphabet data. Meta was cancelled but I have 3 of 4 peers \u2014 sufficient for a meaningful comparison. Proceeding with synthesis. Key narrative: Apple is growing intensity fastest in absolute terms but still lags peers on R&D-as-%-revenue.",
+    "timestamp": 15000
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_005",
+    "content": "Apple\u2019s R&D intensity has grown from 6.3% to 8.0% of revenue (2019\u20132023), outpacing peers in absolute dollar growth but lagging in intensity ratio. Microsoft holds steady at ~13% while Alphabet leads at ~15%...",
+    "is_final": false,
+    "quality_score": null,
+    "timestamp": 16000
+  },
+  {
+    "type": "partial_output",
+    "task_id": "t_005",
+    "content": "Apple\u2019s R&D intensity has grown from 6.3% to 8.0% of revenue (2019\u20132023), outpacing Microsoft (13.1%\u219212.9%) and Alphabet (15.1%\u219214.9%) in absolute dollar growth (+84% vs +61% and +74%) but lagging both in R&D-as-%-revenue. Apple\u2019s model reflects hardware-driven revenue scale compressing the intensity ratio even as absolute investment accelerates. Meta data unavailable for this run. Conclusion: Apple is investing heavily in absolute terms but peers dedicate a larger share of revenue to R&D \u2014 a structural difference, not a shortfall.",
+    "is_final": true,
+    "quality_score": 0.94,
+    "timestamp": 17500
+  },
+  {
+    "type": "task_update",
+    "task_id": "t_005",
+    "status": "complete",
+    "error": null,
+    "reason": null,
+    "message": null,
+    "timestamp": 17600
+  },
+  {
+    "type": "run_complete",
+    "run_id": "r_001",
+    "status": "complete",
+    "duration_ms": 18000,
+    "task_count": 5,
+    "output": {
+      "summary": "Apple\u2019s R&D intensity has grown from 6.3% to 8.0% of revenue (2019\u20132023), outpacing Microsoft (13.1%\u219212.9%) and Alphabet (15.1%\u219214.9%) in absolute dollar growth (+84% vs +61% and +74%) but lagging both in R&D-as-%-revenue. Apple\u2019s hardware-driven revenue scale compresses the intensity ratio even as absolute investment accelerates. Conclusion: Apple is investing heavily in absolute terms but peers dedicate a larger share of revenue to R&D \u2014 a structural difference reflecting business model, not a strategic shortfall.",
+      "citations": [
+        { "ref_id": "c1", "title": "Apple 10-K 2023", "source": "SEC EDGAR", "page": 48 },
+        { "ref_id": "c2", "title": "Microsoft 10-K 2023", "source": "SEC EDGAR", "page": 51 },
+        { "ref_id": "c3", "title": "Alphabet 10-K 2023", "source": "SEC EDGAR", "page": 62 }
+      ]
+    },
+    "timestamp": 18000
+  }
+]
