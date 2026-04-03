@@ -6,7 +6,7 @@ A React component that shows a live multi-agent research run unfolding in real t
 
 ## Live demo
 
-_Add your deployed URL here (e.g. Vercel / Netlify link)_
+https://jcurveiq-agent-panel-gamma.vercel.app
 
 ## Running locally
 
